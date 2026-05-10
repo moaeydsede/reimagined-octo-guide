@@ -1,0 +1,27 @@
+{
+  "name": "clinic-queue-pro",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "description": "Professional Arabic RTL clinic queue, appointment and patient follow-up system powered by GitHub Pages + Firebase.",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc && vite build && node scripts/copy-404.cjs",
+    "preview": "vite preview --host 0.0.0.0",
+    "deploy:firebase": "npm run build && firebase deploy",
+    "rules:deploy": "firebase deploy --only firestore:rules,firestore:indexes"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "firebase": "latest",
+    "lucide-react": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router-dom": "latest",
+    "typescript": "latest",
+    "vite": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest"
+  },
+  "devDependencies": {}
+}

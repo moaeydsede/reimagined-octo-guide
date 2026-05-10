@@ -1,0 +1,82 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isMainAdmin() {
+      return signedIn() && request.auth.uid == 'a2uvKrLDoNVPOafbOOM8BlErxek1';
+    }
+
+    function userDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function role() {
+      return signedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        ? userDoc().data.role
+        : '';
+    }
+
+    function staff() {
+      return isMainAdmin() || role() in ['admin', 'reception', 'doctor'];
+    }
+
+    function manager() {
+      return isMainAdmin() || role() in ['admin', 'reception'];
+    }
+
+    match /users/{uid} {
+      allow read: if isMainAdmin() || (signedIn() && request.auth.uid == uid);
+      allow create, update: if isMainAdmin();
+      allow delete: if isMainAdmin() && uid != 'a2uvKrLDoNVPOafbOOM8BlErxek1';
+    }
+
+    match /doctors/{doctorId} {
+      allow read: if true;
+      allow create, update, delete: if manager();
+    }
+
+    match /bookings/{bookingId} {
+      allow read: if staff();
+      allow create, update: if manager() || role() == 'doctor';
+      allow delete: if isMainAdmin() || role() == 'admin';
+    }
+
+    match /queueCounters/{counterId} {
+      allow read, write: if manager();
+    }
+
+    match /queueStates/{stateId} {
+      allow read: if true;
+      allow create, update: if manager() || role() == 'doctor';
+      allow delete: if isMainAdmin() || role() == 'admin';
+    }
+
+    // تذاكر عامة مخففة لا تحتوي على بيانات حساسة كاملة، يستخدمها المريض وشاشة الانتظار.
+    match /patientTickets/{code} {
+      allow get: if true;
+      allow list: if request.query.limit <= 80;
+      allow create, update, delete: if manager() || role() == 'doctor';
+    }
+
+    // بحث المريض برقم الهاتف: لا يسمح بعرض القائمة بالكامل، فقط get برقم الهاتف المعروف.
+    match /publicPhoneLookups/{phoneKey} {
+      allow get: if true;
+      allow list: if false;
+      allow create, update, delete: if manager();
+    }
+
+    match /activityLogs/{logId} {
+      allow read: if staff();
+      allow create: if staff();
+      allow update, delete: if isMainAdmin() || role() == 'admin';
+    }
+
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isMainAdmin() || role() == 'admin';
+    }
+  }
+}

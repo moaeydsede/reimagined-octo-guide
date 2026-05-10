@@ -1,0 +1,21 @@
+{
+  "name": "Clinic Queue Pro",
+  "short_name": "Clinic Pro",
+  "description": "نظام الحجوزات ومتابعة الدور للعيادات",
+  "start_url": "/reimagined-octo-guide/patient",
+  "scope": "/reimagined-octo-guide/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "dir": "rtl",
+  "lang": "ar",
+  "theme_color": "#0B5CFF",
+  "background_color": "#F4F8FF",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
