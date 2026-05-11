@@ -17,6 +17,7 @@ concurrency:
 
 jobs:
   build:
+    name: Build app
     runs-on: ubuntu-latest
 
     steps:
@@ -29,10 +30,10 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Build app
-        run: npm run build
+        run: npx vite build
 
       - name: Create SPA fallback
         run: cp dist/index.html dist/404.html
@@ -43,6 +44,7 @@ jobs:
           path: dist
 
   deploy:
+    name: Deploy app
     needs: build
     runs-on: ubuntu-latest
 
