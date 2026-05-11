@@ -1,0 +1,16 @@
+{
+  "name": "عيادات المشفى",
+  "short_name": "المشفى",
+  "description": "نظام احترافي لإدارة حجوزات العيادات ومتابعة الدور",
+  "start_url": "/reimagined-octo-guide/",
+  "scope": "/reimagined-octo-guide/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "dir": "rtl",
+  "lang": "ar",
+  "background_color": "#f6f8ff",
+  "theme_color": "#0b1b3a",
+  "icons": [
+    { "src": "/reimagined-octo-guide/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
